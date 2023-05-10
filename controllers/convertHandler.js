@@ -3,10 +3,13 @@ function ConvertHandler() {
   this.getResult = function(input) {
     if (!this.getNum(input)) {
       if (!this.getUnit(input)){
+        console.log('invalid number and unit');
         return 'invalid number and unit';
       }
+      console.log('invalid number');
       return 'invalid number';
     } else if (!this.getUnit(input)) {
+      console.log('invalid unit')
       return 'invalid unit';
     }
     
@@ -16,23 +19,29 @@ function ConvertHandler() {
   this.getNum = function(input) {
     let result;
     // need to check input and validate
-
-    result = input.split(/(mi)(km)|(gal)|(L)|(lbs)|(kg)$/);
-    if (err) {
+    result = input.toLowerCase().split(/[a-zA-Z]/)[0];
+    if (result == '') {
+      result = 1;
+    } else if (!result) {
       return false;
-    }
+    } else if (result.match(/\d+(\.){0,1}\d*(\/){0,1}\d*\.*\d*/)[0] != result) {
+      return false;
+    } 
+    console.log("getNum = " + result);
     return result;
   };
   
   this.getUnit = function(input) {
     let result;
     // need to check input and validate
-    
-    result = input.match(/(mi)(km)|(gal)|(L)|(lbs)|(kg)$/);
-    if (err) {
+
+    //console.log(input.toLowerCase().match(/(mi)$|(km)$|(gal)$|(l)$|(lbs)$|(kg)$/)[0]);
+    result = input.toLowerCase().match(/(mi)$|(km)$|(gal)$|(l)$|(lbs)$|(kg)$/);
+    if (!result) {
       return false;
     }
-    return result;
+    console.log("getUnit = " + result[0]);
+    return result[0];
   };
   
   this.getReturnUnit = function(initUnit) {
